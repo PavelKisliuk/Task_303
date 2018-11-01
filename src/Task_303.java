@@ -18,6 +18,7 @@ public class Task_303 {
 
 //-----------------------------------------------------------------------------
 /*public*/class Numerics {
+	//-----------------------------------------------------------------------------fields
 	private ArrayList<Integer> numericsArray; //storage of sequence of numbers
 	//-----------------------------------------------------------------------------constructors
 	/*public*/private Numerics(String path)
@@ -29,7 +30,7 @@ public class Task_303 {
 				//-----------------------------------------------------------------------------
 				String numericsString = input.nextLine().strip(); //read data from file
 				//-----------------------------------------------------------------------------
-				if(this.isCorrectParametersOfListOfSuicides(numericsString)) { //check data
+				if(this.isCorrectParametersOfNumericsString(numericsString)) { //check data
 					for (Character ch : numericsString.toCharArray()) {
 						this.numericsArray.add(Integer.valueOf(ch.toString())); //write data to array
 						//impossible Integer.valueOf(ch) ---- why?
@@ -56,7 +57,7 @@ public class Task_303 {
 		this("INPUT.txt");
 	}
 	//-----------------------------------------------------------------------------methods for constructors
-	private boolean isCorrectParametersOfListOfSuicides(String s)
+	private boolean isCorrectParametersOfNumericsString(String s)
 	{
 		return (s.matches("[1-9]+")) && (s.length() >= 2) && (s.length() <= 50);
 	}
