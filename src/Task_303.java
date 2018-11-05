@@ -5,96 +5,97 @@ import java.util.*;
 
 public class Task_303 {
 	public static void main(String[] args) {
-		try(Formatter output = new Formatter("OUTPUT.txt")) {
-			Numerics test = new Numerics();
-			output.format("%d", test.computePlusMinus());
+		Numerics test = new Numerics();
+		try(Formatter output = new Formatter("OUTPUT.TXT")) {
+			output.format(test.toString());
 		}catch (FileNotFoundException | FormatterClosedException e) {
 			e.printStackTrace();
 		}
 	}
-}
 
-
-
-//-----------------------------------------------------------------------------
-/*public*/class Numerics {
-	//-----------------------------------------------------------------------------fields
-	private ArrayList<Integer> numericsArray; //storage of sequence of numbers
-	//-----------------------------------------------------------------------------constructors
-	/*public*/private Numerics(String path)
-	{
-		try(Scanner input = new Scanner(Paths.get(path))) {
+	//-----------------------------------------------------------------------------
+	/*public*/ static class Numerics {
+		//-----------------------------------------------------------------------------fields
+		private ArrayList<Integer> numericsArray; //storage of sequence of numbers
+		//-----------------------------------------------------------------------------constructors
+		/*public*/private Numerics(String path)
+		{
 			this.numericsArray = new ArrayList<>();
-			//-----------------------------------------------------------------------------
-			if(input.hasNext()) {
+			try(Scanner input = new Scanner(Paths.get(path))) {
 				//-----------------------------------------------------------------------------
-				String numericsString = input.nextLine().strip(); //read data from file
-				//-----------------------------------------------------------------------------
-				if(this.isCorrectParametersOfNumericsString(numericsString)) { //check data
-					for (Character ch : numericsString.toCharArray()) {
-						this.numericsArray.add(Integer.valueOf(ch.toString())); //write data to array
-						//impossible Integer.valueOf(ch) ---- why?
+				if(input.hasNext()) {
+					//-----------------------------------------------------------------------------
+					String numericsString = input.nextLine(); //read data from file
+					//-----------------------------------------------------------------------------
+					if(this.isCorrectParametersOfNumericsString(numericsString)) {
+						for (Character ch : numericsString.toCharArray()) {
+							this.numericsArray.add(Character.getNumericValue(ch));
+						}
 					}
+					//-----------------------------------------------------------------------------
+					else {
+						throw new IOException("Incorrect value in file!");
+					}
+					//-----------------------------------------------------------------------------
 				}
 				//-----------------------------------------------------------------------------
 				else {
-					throw new IOException("Incorrect value in file!");
+					throw new IOException("File is empty!");
 				}
 				//-----------------------------------------------------------------------------
+			}catch (IOException | NoSuchElementException e) {
+				e.printStackTrace();
 			}
-			//-----------------------------------------------------------------------------
-			else {
-				throw new IOException("File is empty!");
-			}
-			//-----------------------------------------------------------------------------
-		}catch (IOException | NoSuchElementException e) {
-			e.printStackTrace();
 		}
-	}
 
-	/*public*/Numerics()
-	{
-		this("INPUT.txt");
-	}
-	//-----------------------------------------------------------------------------methods for constructors
-	private boolean isCorrectParametersOfNumericsString(String s)
-	{
-		return (s.matches("[1-9]+")) && (s.length() >= 2) && (s.length() <= 50);
-	}
-	//-----------------------------------------------------------------------------
-	//-----------------------------------------------------------------------------methods
-	/*public*/int computePlusMinus()
-	{
-		int maxSum = 0;
-		boolean isPlus = true;
+		/*public*/Numerics()
+		{
+			this("INPUT.TXT");
+		}
+		//-----------------------------------------------------------------------------methods for constructors
+		private boolean isCorrectParametersOfNumericsString(String s)
+		{
+			return (s.matches("[1-9]\\d+")) && (s.length() >= 2) && (s.length() <= 50);
+		}
 		//-----------------------------------------------------------------------------
-		for(int i = 0; i < this.numericsArray.size(); i++) {
-			int sumTemp = 0;
+		//-----------------------------------------------------------------------------methods
+		/*public*/private Integer computePlusMinus()
+		{
+			ArrayList<Integer> integerArrayList = new ArrayList<>();
+			boolean isPlus = true;
 			//-----------------------------------------------------------------------------
-			for(int j = 0; j < this.numericsArray.size(); j++) {
+			for(int i = 0; i < this.numericsArray.size(); i++) {
+				int sumTemp = 0;
 				//-----------------------------------------------------------------------------
-				if(j != i) {
+				for(int j = 0; j < this.numericsArray.size(); j++) {
 					//-----------------------------------------------------------------------------
-					if(isPlus) {
-						sumTemp+= this.numericsArray.get(j);
-						isPlus = false;
-					}
-					else {
-						sumTemp-= this.numericsArray.get(j);
-						isPlus = true;
+					if(j != i) {
+						//-----------------------------------------------------------------------------
+						if(isPlus) {
+							sumTemp+= this.numericsArray.get(j);
+							isPlus = false;
+						}
+						else {
+							sumTemp-= this.numericsArray.get(j);
+							isPlus = true;
+						}
+						//-----------------------------------------------------------------------------
 					}
 					//-----------------------------------------------------------------------------
 				}
 				//-----------------------------------------------------------------------------
+				integerArrayList.add(sumTemp);
+				isPlus = true;
+				//-----------------------------------------------------------------------------
 			}
 			//-----------------------------------------------------------------------------
-			if(sumTemp > maxSum) {
-				maxSum = sumTemp;
-			}
-			isPlus = true;
-			//-----------------------------------------------------------------------------
+			return Collections.max(integerArrayList);
 		}
-		//-----------------------------------------------------------------------------
-		return maxSum;
+
+		@Override
+		public String toString()
+		{
+			return String.valueOf(this.computePlusMinus());
+		}
 	}
 }
