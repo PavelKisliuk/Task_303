@@ -18,10 +18,10 @@ public class Task_303 {
 		//-----------------------------------------------------------------------------fields
 		private ArrayList<Integer> numericsArray; //storage of sequence of numbers
 		//-----------------------------------------------------------------------------constructors
-		/*public*/private Numerics(String path)
+		/*public*/private Numerics(final String path)
 		{
 			this.numericsArray = new ArrayList<>();
-			try(Scanner input = new Scanner(Paths.get(path))) {
+			try(final Scanner input = new Scanner(Paths.get(path))) {
 				//-----------------------------------------------------------------------------
 				if(input.hasNext()) {
 					//-----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ public class Task_303 {
 			this("INPUT.TXT");
 		}
 		//-----------------------------------------------------------------------------methods for constructors
-		private boolean isCorrectParametersOfNumericsString(String s)
+		private boolean isCorrectParametersOfNumericsString(final String s)
 		{
 			return (s.matches("[1-9]\\d+")) && (s.length() >= 2) && (s.length() <= 50);
 		}
